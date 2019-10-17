@@ -7,8 +7,8 @@
 # Example:  ./build_and_submit.sh WordCount /Users/flo/Documents/packages/spark-2.3.4-bin-hadoop2.7
 #
 # Paramters:
-#  - $1 : job to execute
-#  - $2 : [optional] path to spark directory
+  - $1 : Preprocessor #job to execute
+  - $2 : /usr/local/saprk # [optional] path to spark directory
 set -o pipefail
 
 echo -e "\n --- building .jar --- \n"
@@ -17,7 +17,7 @@ sbt assembly || { echo 'Build failed' ; exit 1; }
 
 echo -e "\n --- spark-submit --- \n"
 
-path_to_spark="$HOME/spark-2.3.4-bin-hadoop2.7"
+path_to_spark="/usr/local/spark"
 
 if [ -n "$2" ]; then path_to_spark=$2; fi
 

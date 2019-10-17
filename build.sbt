@@ -4,9 +4,9 @@ version := "1.0"
 
 organization := "paristech"
 
-scalaVersion := "2.11.11"
+scalaVersion := "2.11.12"
 
-val sparkVersion = "2.3.4"
+val sparkVersion = "2.4.4"
 
 libraryDependencies ++= Seq(
   // Spark dependencies. Marked as provided because they must not be included in the uber jar
