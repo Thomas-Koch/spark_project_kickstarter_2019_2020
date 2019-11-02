@@ -2,6 +2,12 @@ package paristech
 
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.functions.col
+import org.apache.spark.sql.functions.udf
+
+
+
+
 
 object Preprocessor {
 
@@ -29,7 +35,7 @@ object Preprocessor {
       .getOrCreate()
 
     /*******************************************************************************
-      *
+      * import spark.implicits._
       *       TP 2
       *
       *       - Charger un fichier csv dans un dataFrame
