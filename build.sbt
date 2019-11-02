@@ -4,7 +4,7 @@ version := "1.0"
 
 organization := "paristech"
 
-scalaVersion := "2.11.12"
+scalaVersion := "2.11.6"
 
 val sparkVersion = "2.4.4"
 
