@@ -56,8 +56,10 @@ object Preprocessor {
       .option("inferSchema", "true") // pour inférer le type de chaque colonne (Int, String, etc.)
       .csv("src/main/ressources/data/train_clean.csv")
 
-    println(df.printSchema())
-    println(df.show(5))
+    println("\ndf : ")
+    df.printSchema
+    println("df : ")
+    df.show(5)
 
 
     println("/////////////////////////////////////////////////////////////////////////////////////")
@@ -72,9 +74,11 @@ object Preprocessor {
       .withColumn("launched_at", $"launched_at".cast("Int"))
       .withColumn("backers_count", $"backers_count".cast("Int"))
       .withColumn("final_status", $"final_status".cast("Int"))
-
-    println(dfCasted.printSchema())
-    println(dfCasted.show(5))
+    
+    println("\ndfCasted : ")
+    dfCasted.printSchema
+    println("dfCasted : ")
+    dfCasted.show(5)
 
 
     println("/////////////////////////////////////////////////////////////////////////////////////")
@@ -85,8 +89,10 @@ object Preprocessor {
       .drop("disable_communication")
       .drop("backers_count", "state_changed_at")
 
-    println(dfNoFutur.printSchema())
-    println(dfNoFutur.show(5))
+    println("\ndfNoFutur : ")
+    dfNoFutur.printSchema
+    println("dfNoFutur : ")
+    dfNoFutur.show(5)
 
 
     println("/////////////////////////////////////////////////////////////////////////////////////")
@@ -108,19 +114,30 @@ object Preprocessor {
         currency
     }
 
+   def cleanFinalStatus(final_status: Int): Int = {
+     if (final_status != 1)
+       0
+     else
+       final_status
+}
+
     val cleanCountryUdf = udf(cleanCountry _)
     val cleanCurrencyUdf = udf(cleanCurrency _)
+    val cleanFinalStatusUdf = udf(cleanFinalStatus _)
 
     val dfCountry: DataFrame = dfNoFutur
       .withColumn("country2", cleanCountryUdf($"country", $"currency"))
       .withColumn("currency2", cleanCurrencyUdf($"currency"))
+      .withColumn("final_status", cleanFinalStatusUdf($"final_status"))
       .drop("country", "currency")
       .filter($"final_status" === 0 || $"final_status" === 1)
       .withColumn("days_campaign", datediff(from_unixtime($"deadline") , from_unixtime($"launched_at")))
       .withColumn("hours_prepa", (($"launched_at" - $"created_at")/3.6).cast("Int")/1000)
 
-    println(dfCountry.printSchema())
-    println(dfCountry.show(5))
+    println("\ndfCountry : ")
+    dfCountry.printSchema
+    println("dfCountry : ")
+    dfCountry.show(5)
 
 
     println("/////////////////////////////////////////////////////////////////////////////////////")
@@ -147,14 +164,12 @@ object Preprocessor {
       .withColumn("desc", lower($"desc"))
       .withColumn("keywords", lower($"keywords"))
       .withColumn("text", concat_ws(" ", $"name", $"desc", $"keywords"))
-      .withColumn("days_campaign", when($"days_campaign".isNull, -1).otherwise("$days_campaign"))
-      .withColumn("hours_prepa", when($"hours_prepa".isNull, -1).otherwise("$hours_prepa"))
-      .withColumn("goal", when($"goal".isNull, -1).otherwise("$goal"))
-      .withColumn("country2", when($"country2".isNull, "unknown").otherwise("$country2"))
-      .withColumn("currency2", when($"currency2".isNull, "unknown").otherwise("$currency2"))
+      .na.fill(Map("currency2" -> "unknown", "country2" -> "unknown", "days_campaign" -> -1, "hours_prepa" -> -1, "goal" -> -1))
 
-    println(dfCountry2.printSchema())
-    println(dfCountry2.show(5))
+    println("\ndfCountry2 : ")
+    dfCountry2.printSchema
+    println("dfCountry2 : ")
+    dfCountry2.show(5)
 
     println("/////////////////////////////////////////////////////////////////////////////////////")
     println("//                    Sauvegarde du DataFrame => monDataFrameFinal                 //")
@@ -164,5 +179,6 @@ object Preprocessor {
     val monDataFrameFinal: DataFrame = dfCountry2
 
     monDataFrameFinal.write.mode("overwrite").parquet("src/main/ressources/monDataFrameFinal")
+
   }
 }

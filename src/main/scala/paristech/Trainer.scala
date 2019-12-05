@@ -16,8 +16,9 @@ import java.io.File
 object Trainer {
 
   def main(args: Array[String]): Unit = {
-
-    val conf = new SparkConf().setAll(Map(
+   
+   
+   val conf = new SparkConf().setAll(Map(
       "spark.scheduler.mode" -> "FIFO",
       "spark.speculation" -> "false",
       "spark.reducer.maxSizeInFlight" -> "48m",
@@ -61,11 +62,11 @@ object Trainer {
       .read
       .option("header", value = true) // utilise la première ligne du (des) fichier(s) comme header
       .option("inferSchema", "true") // pour inférer le type de chaque colonne (Int, String, etc.)
-      .parquet("src/main/ressources/monDataFrameFinal") //data/prepared_trainingset")  monDataFrameFinal
+      .parquet("src/main/ressources/monDataFrameFinal") // src/main/ressources/monDataFrameFinal") //data/prepared_trainingset")  
 
-    println("Training Dataframe")
+    println("\nTraining Dataframe")
     println(df.show(5))
-    println(df.printSchema)
+    df.printSchema
 
     println("/////////////////////////////////////////////////////////////////////////////////////")
     println("//                    Utilisation des donnees textuelles                           //")
@@ -125,7 +126,6 @@ object Trainer {
       .setInputCols(Array("tfidf", "days_campaign", "hours_prepa", "goal", "country_onehot", "currency_onehot"))
       .setOutputCol("features")
 
-    println("OUTPUT FEATURES")
 
     println("//                    Etape 2 : Creation et instanciation du modèle de classification")
     println("//                    Regression logistique                                        //")
@@ -157,7 +157,7 @@ object Trainer {
     val Array(training, test) = df.randomSplit(Array(0.9, 0.1), seed = 1991)
 
     val model = pipeline.fit(training)
-    println(s"Model 1 was fit using parameters: ${model.parent.extractParamMap}")
+    println(s"\nModel 1 was fit using parameters: ${model.parent.extractParamMap}")
 
     val dfWithSimplePredictions = model.transform(test)
 
@@ -170,7 +170,7 @@ object Trainer {
 
     val f1score = evaluator.evaluate(dfWithSimplePredictions)
 
-    println("Le f1-score est de " + f1score)
+    println("Le f1-score est de " + f1score + " \n")
 
     val paramGrid = new ParamGridBuilder()
       .addGrid(lr.regParam, Array(10e-8, 10e-6, 10e-4, 10e-2))
@@ -184,8 +184,7 @@ object Trainer {
       .setEstimatorParamMaps(paramGrid)
       .setTrainRatio(0.7)
 
-    // Entrainement du modèle avec l'échantillon training
-    println("Entrainement du modèle avec l'échantillon training")
+    println("//                    Entrainement du modèle avec l'échantillon training          //")
     val validationModel = trainValidationSplit.fit(training)
 
     val dfWithPredictions = validationModel.transform(test).select("features","final_status","predictions")
@@ -194,27 +193,24 @@ object Trainer {
 
     val score = evaluator.evaluate(dfWithPredictions)
 
-    dfWithPredictions.groupBy("final_status","predictions").count.show()
-
-    println("F1 Score est " + score)
+    println("Le f1 score est de " + score + " \n")
 
 
-    // Evaluer la precision (accuracy)
+    println("//                    Evaluation de la precision (accuracy)                       //")
     val evaluator_acc = new MulticlassClassificationEvaluator()
       .setLabelCol("final_status")
       .setPredictionCol("predictions")
       .setMetricName("accuracy")
 
-    // Obtention de la mesure de performance
+    println("//                    Obtention de la mesure de performance                       //")
     val accuracy = evaluator_acc.evaluate(dfWithPredictions)
-    println("Precision obtenue : " + accuracy)
+    println("\nPrecision obtenue : " + accuracy +" \n")
 
 
     println("/////////////////////////////////////////////////////////////////////////////////////")
     println("//                    Sauvegarde du modele                                         //")
     println("/////////////////////////////////////////////////////////////////////////////////////")
 
-    // Saving model
 
     validationModel.write.overwrite.save("src/main/model/LogisticRegression")
 
