@@ -1,0 +1,22 @@
+[0m[[0m[31merror[0m] [0m[0m/home/p5hngk/Downloads/GitHub/spark_project_kickstarter_2019_2020/src/main/scala/paristech/Preprocessor.scala:136:36: not found: value datediff[0m
+[0m[[0m[31merror[0m] [0m[0m      .withColumn("days_campaign", datediff(from_unixtime($"deadline") , from_unixtime($"launched_at")))[0m
+[0m[[0m[31merror[0m] [0m[0m                                   ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/p5hngk/Downloads/GitHub/spark_project_kickstarter_2019_2020/src/main/scala/paristech/Preprocessor.scala:136:45: not found: value from_unixtime[0m
+[0m[[0m[31merror[0m] [0m[0m      .withColumn("days_campaign", datediff(from_unixtime($"deadline") , from_unixtime($"launched_at")))[0m
+[0m[[0m[31merror[0m] [0m[0m                                            ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/p5hngk/Downloads/GitHub/spark_project_kickstarter_2019_2020/src/main/scala/paristech/Preprocessor.scala:136:74: not found: value from_unixtime[0m
+[0m[[0m[31merror[0m] [0m[0m      .withColumn("days_campaign", datediff(from_unixtime($"deadline") , from_unixtime($"launched_at")))[0m
+[0m[[0m[31merror[0m] [0m[0m                                                                         ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/p5hngk/Downloads/GitHub/spark_project_kickstarter_2019_2020/src/main/scala/paristech/Preprocessor.scala:165:27: not found: value lower[0m
+[0m[[0m[31merror[0m] [0m[0m      .withColumn("name", lower($"name"))[0m
+[0m[[0m[31merror[0m] [0m[0m                          ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/p5hngk/Downloads/GitHub/spark_project_kickstarter_2019_2020/src/main/scala/paristech/Preprocessor.scala:166:27: not found: value lower[0m
+[0m[[0m[31merror[0m] [0m[0m      .withColumn("desc", lower($"desc"))[0m
+[0m[[0m[31merror[0m] [0m[0m                          ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/p5hngk/Downloads/GitHub/spark_project_kickstarter_2019_2020/src/main/scala/paristech/Preprocessor.scala:167:31: not found: value lower[0m
+[0m[[0m[31merror[0m] [0m[0m      .withColumn("keywords", lower($"keywords"))[0m
+[0m[[0m[31merror[0m] [0m[0m                              ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/p5hngk/Downloads/GitHub/spark_project_kickstarter_2019_2020/src/main/scala/paristech/Preprocessor.scala:168:27: not found: value concat_ws[0m
+[0m[[0m[31merror[0m] [0m[0m      .withColumn("text", concat_ws(" ", $"name", $"desc", $"keywords"))[0m
+[0m[[0m[31merror[0m] [0m[0m                          ^[0m
+[0m[[0m[31merror[0m] [0m[0m7 errors found[0m
