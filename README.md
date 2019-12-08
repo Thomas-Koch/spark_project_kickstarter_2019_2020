@@ -148,7 +148,7 @@ Après avoir rédigé le `Trainer.scala`, j'ai lancé une première fois le mod�
 	Le f1 score est de 0.647367360180229
 	```
 * **Données perso** : après entraînement du modèle et réglage des hyper-paramètres, on obtient 
-	```scala
+	```
 	+------------+-----------+-----+
 	|final_status|predictions|count|
 	+------------+-----------+-----+
