@@ -22,7 +22,7 @@ En lançant la requête suivante :
 	dfCountry.groupBy($"final_status" > 1).count.orderBy($"count".desc).show()
 	``` 
 J'ai pu constater que les final_status, n'étaient pas tous à 1 (Success) ou 0 (Fail).
-* 	```scala
+* 	```
 	+-------------------+------+
 	|(final_status > 1)| count|
 	+-------------------+------+
@@ -90,7 +90,7 @@ Même si la requête
 	dfCountry3.groupBy($"hours_prepa" < 0).count.orderBy($"count".desc).show()
 	```
 me renvoyait un faible nombre de projet dans ce cas :
-* 	```scala 
+* 	```
 	+-----------------+------+
 	|(hours_prepa < 0)| count|
 	+-----------------+------+
@@ -120,7 +120,7 @@ Et en lançant la requête
 	dfCountry2.groupBy($"hours_prepa" < 0).count.orderBy($"count".desc).show()
 	```
 J'ai eu le résultat :
-*	```scala
+*	```
 	+-----------------+------+
 	|(hours_prepa < 0)| count|
 	+-----------------+------+
