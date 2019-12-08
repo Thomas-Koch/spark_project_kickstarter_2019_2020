@@ -4,6 +4,7 @@ import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions.col
 import org.apache.spark.sql.functions.udf
+import org.apache.spark.sql.functions._
 import org.apache.spark.sql.DataFrame
 
 
@@ -31,6 +32,8 @@ object Preprocessor {
       .config(conf)
       .appName("TP Spark : Preprocessor")
       .getOrCreate()
+
+    import spark.implicits._
 
     /*******************************************************************************
       * import spark.implicits._

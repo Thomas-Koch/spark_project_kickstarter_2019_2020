@@ -116,8 +116,8 @@ object WordCount {
       */
 
     val dfWordCount: DataFrame = sc.textFile(filepath)
-      .flatMap { case (line: String) => line.split(" ") }
-      .map { case (word: String) => (word, 1) }
+      .flatMap { case line: String => line.split(" ") }
+      .map { case word: String => (word, 1) }
       .reduceByKey { case (i: Int, j: Int) => i + j }
       // permet de passer d'un RDD à un DataFrame. ATTENTION : on peut faire ça car on a importé plus haut les
       // implicites du SparkSession via : import spark.implicits._
